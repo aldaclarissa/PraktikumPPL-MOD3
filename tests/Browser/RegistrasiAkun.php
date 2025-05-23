@@ -12,19 +12,19 @@ class RegistrasiAkun extends DuskTestCase
     /**
      * A Dusk test example,
      */
-     public function RegistrasiAkun(): void
+     public function testRegistrasiAkun(): void
      {
-         $this->browse(function (Browser $browser): void {
-             $browser->visit(url: '/register')
-                     ->assertSee(text:'Enterprise Application Development')
-                     ->clicklink(link: 'Register')
-                     ->assertPathIs('/register')
-                     ->type(field: 'Name', value: 'Alda Clarissa Syahda Nur') 
-                     ->type(field: 'Email', value: 'alda@example.com')
-                     ->type(field: 'Password', value: 'alda123')
-                     ->type(field: 'Confirm Password', value: 'alda123')
-                     ->press(button: 'REGISTER')
-                     ->asserPathIs(path: '/dashboard');
+         $this->browse(function (Browser $browser) {
+             $browser->visit('/')
+                 ->assertSee('Enterprise Application Development')
+                 ->clickLink('Register')
+                 ->assertPathIs('/register')
+                 ->type('name', 'Alda')
+                 ->type('email', 'alda@gmail.com')
+                 ->type('password', 'alda123')
+                 ->type('password_confirmation', 'alda123')
+                 ->press('REGISTER')
+                 ->assertPathIs('/dashboard');
          });
     }
 }

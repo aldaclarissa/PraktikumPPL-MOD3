@@ -5,6 +5,7 @@ namespace Tests\Browser;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
+use App\Models\User;
 
 class LoginAkun extends DuskTestCase
 {
@@ -12,17 +13,19 @@ class LoginAkun extends DuskTestCase
     /**
      * A Dusk test example.
      */
-    public function Login(): void
+    public function testLoginAkun()
     {
-        $this->browse(function (Browser $browser): void {
-            $browser->visit(url: '/')
-                    ->assertSee(text: 'Enterprise Application Development')
-                    ->clickLink(link: 'Login')
-                    ->assertPathIs(path: '/login')
-                    ->type(field: 'Email', value: 'alda@gmail.com')
-                    ->type(field: 'Password', value: 'alda123')
-                    ->press(button: 'LOG IN')
-                    ->assertPathIs(path: '/dashboard');
+        $user = User::factory()->create([
+            'email' => 'alda' . uniqid() . '@gmail.com',
+            'password' => bcrypt('alda123'),
+        ]);
+
+        $this->browse(function (Browser $browser) use ($user) {
+            $browser->visit('/login')
+                ->type('email', $user->email)
+                ->type('password', 'alda123')
+                ->press('button[type=submit]')
+                ->assertPathIs('/dashboard');
         });
     }
 }
